@@ -1,5 +1,6 @@
 /* eslint-env node */
 module.exports = {
+  'type' : 'commonjs',
   'env': {
     'node': true,
     'es6': true,
