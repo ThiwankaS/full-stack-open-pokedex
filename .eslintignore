@@ -2,3 +2,5 @@ webpack.config.cjs
 node_modules/
 dist/
 .eslintrc.cjs
+.eslintrc.js
+webpack.config.js
