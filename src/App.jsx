@@ -31,16 +31,12 @@ const App = () => {
     previous = pokemonList.find(({ id }) => id === pokemonId - 1)
     next = pokemonList.find(({ id }) => id === pokemonId + 1)
   }
-  console.log('Hello from App component !')
   return (
     <Routes>
-      {console.log('Step 01')}
       <Route exact path="/"  element={<PokemonList pokemonList={pokemonList} />}/>
-      {console.log('Step 02')}
       <Route exact path="/pokemon/:name" element={
         <PokemonPage pokemonList={pokemonList} previous={previous} next={next} />
       } />
-      {console.log('Step 03')}
     </Routes>
   )
 }
