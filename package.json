@@ -1,6 +1,6 @@
 {
   "name": "fullstackopen-cicd",
-  "type": "module",
+  "type": "commonjs",
   "version": "1.0.0",
   "description": "Full Stack Open",
   "main": "src/index.js",
