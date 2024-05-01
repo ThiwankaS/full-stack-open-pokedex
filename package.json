@@ -11,7 +11,7 @@
     "eslint": "eslint './**/*.{js,jsx}'",
     "build": "webpack --mode production",
     "test:e2e": "cypress run --e2e",
-    "cypress:open": "cypress open"
+    "deploy:fly": "flyctl deploy --remote-only"
   },
   "repository": {
     "type": "git",
