@@ -28,6 +28,7 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       - name: Deploy app
+        uses: superfly/flyctl-actions/setup-flyctl@master
         with:
           command: npm run deploy:fly
           env:
