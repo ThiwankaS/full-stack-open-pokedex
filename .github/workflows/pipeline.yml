@@ -13,7 +13,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - uses: cypress-io/github-action@v5
       - name: Install dependencies
         run: npm install
       - name: Lint
@@ -22,7 +21,9 @@ jobs:
         run: npm run build
       - name: Test
         run: npm run test
-      - name: Start the Srever
-        run: npm run start-prod
       - name: e2e tests
-        run: npm run test:e2e
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test:e2e
+          start: npm run start-prod
+          wait-on: http://localhost:5000
