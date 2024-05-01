@@ -22,8 +22,7 @@ jobs:
         run: npm run build
       - name: Test
         run: npm run test
+      - name: Start the Srever
+        run: npm run start-prod
       - name: e2e tests
         run: npm run test:e2e
-        with:
-          start: npm run start-prod
-          wait-on: http://localhost:5000
