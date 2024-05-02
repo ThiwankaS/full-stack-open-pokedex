@@ -8,7 +8,7 @@ on:
     branches: [main]
     types: [closed]
 jobs:
-  simple_deployment_pipeline:
+  Build_and_Test:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
@@ -29,11 +29,15 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
+  Deploy_app:
+    runs-on: ubuntu-20.04
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
+    steps:
+      - uses: actions/checkout@v4
       - name: Set up Fly.io
         if: ${{ github.event.pull_request.merged == true }}
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy App
-        if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
         run: npm run deploy:fly
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.GITHUB_TOKEN}}
