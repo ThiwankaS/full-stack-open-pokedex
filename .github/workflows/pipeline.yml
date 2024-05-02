@@ -29,10 +29,11 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
+      - name: Set up Fly.io
         if: ${{ github.event_name == 'push' }}
-          - name: Set up Fly.io
-            uses: superfly/flyctl-actions/setup-flyctl@master
-          - name: Deploy App
-            run: npm run deploy:fly
-            env:
-              FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy App
+        if: ${{ github.event_name == 'push' }}
+        run: npm run deploy:fly
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
