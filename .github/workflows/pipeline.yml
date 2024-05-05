@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - any
   pull_request:
     branches: [main]
     types: [closed]
+
 jobs:
   Build_and_Test:
     runs-on: ubuntu-20.04
@@ -23,13 +25,19 @@ jobs:
         run: npm run build
       - name: Test
         run: npm run test
-      - name: e2e tests
+      - name: e2e tests (Only on merge)
         uses: cypress-io/github-action@v5
         with:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
         if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
+
+  deploy_on_merge: # Separate job for deployment on merge
+    runs-on: ubuntu-20.04
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
+    steps:
+      - uses: actions/checkout@v4
       - name: Set up Fly.io
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy App
