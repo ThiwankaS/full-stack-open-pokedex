@@ -29,13 +29,8 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-  Deploy_app:
-    runs-on: ubuntu-20.04
-    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
-    steps:
-      - uses: actions/checkout@v4
+        if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
       - name: Set up Fly.io
-        if: ${{ github.event.pull_request.merged == true }}
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy App
         run: npm run deploy:fly
