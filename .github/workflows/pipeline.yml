@@ -4,10 +4,9 @@ on:
   push:
     branches:
       - main
-      - any
   pull_request:
     branches: [main]
-    types: [closed]
+    types: [opened, synchronize]
 
 jobs:
   Build_and_Test:
@@ -31,7 +30,7 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-        if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
+        if: ${{ github.event_name == 'push' }}
       - uses: actions/checkout@v4
       - name: Set up Fly.io
         uses: superfly/flyctl-actions/setup-flyctl@master
