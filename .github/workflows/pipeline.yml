@@ -9,8 +9,7 @@ on:
     types: [opened, synchronize, closed]
 
 jobs:
-  Build_and_Test:
-    if: github.event.pull_request.merged == false
+  Simple_development_pipeline:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
@@ -31,14 +30,11 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-  Deploy_app:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v4
       - name: Set up Fly.io
         uses: superfly/flyctl-actions/setup-flyctl@master
+        if: github.event.pull_request.merged == true
       - name: Deploy App
         run: npm run deploy:fly
+        if: github.event.pull_request.merged == true
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
