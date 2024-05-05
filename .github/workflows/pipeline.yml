@@ -1,9 +1,12 @@
 name: Deployment pipeline
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches: [main]
-    types: [opened, closed]
+    types: [opened, synchronize]
 
 jobs:
   Simple_development_pipeline:
@@ -28,10 +31,10 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       - name: Set up Fly.io
-        if: github.event.action == 'closed' && github.action.pull_request.merged == true
+        if: ${{ github.event_name == 'push'}}
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy App
-        if: github.event.action == 'closed' && github.action.pull_request.merged == true
+        if: ${{ github.event_name == 'push'}}
         run: npm run deploy:fly
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
