@@ -32,11 +32,6 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
         if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
-
-  deploy_on_merge: # Separate job for deployment on merge
-    runs-on: ubuntu-20.04
-    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
-    steps:
       - uses: actions/checkout@v4
       - name: Set up Fly.io
         uses: superfly/flyctl-actions/setup-flyctl@master
