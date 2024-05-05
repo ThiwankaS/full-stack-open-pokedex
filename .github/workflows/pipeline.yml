@@ -11,23 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        if: github.event.action == 'opened' && github.action.pull_request.merged == false
         with:
           node-version: "20"
       - name: Install dependencies
-        if: github.event.action == 'opened' && github.action.pull_request.merged == false
         run: npm install
       - name: Lint
-        if: github.event.action == 'opened' && github.action.pull_request.merged == false
         run: npm run eslint
       - name: Build
-        if: github.event.action == 'opened' && github.action.pull_request.merged == false
         run: npm run build
       - name: Unit test
-        if: github.event.action == 'opened' && github.action.pull_request.merged == false
         run: npm run test
       - name: e2e tests
-        if: github.event.action == 'opened' && github.action.pull_request.merged == false
         uses: cypress-io/github-action@v5
         with:
           command: npm run test:e2e
