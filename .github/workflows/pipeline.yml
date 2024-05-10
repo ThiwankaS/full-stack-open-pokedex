@@ -11,6 +11,8 @@ on:
 jobs:
   Simple_development_pipeline:
     runs-on: ubuntu-20.04
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,16 +40,11 @@ jobs:
         run: npm run deploy:fly
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  tag_release:
-    runs-on: ubuntu-20.04
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        if: ${{ github.event.pull_request.merged == true }}
+        uses: anothrNick/github-tag-action@v1
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: "0"
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
