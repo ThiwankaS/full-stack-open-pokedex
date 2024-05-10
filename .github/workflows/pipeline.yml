@@ -29,7 +29,7 @@ jobs:
         with:
           command: npm run test:e2e
           start: npm run start-prod
-          wait-on: http://localhost:5000
+          wait_on: http://localhost:5000
       - name: Set up Fly.io
         if: ${{ github.event_name == 'push'}}
         uses: superfly/flyctl-actions/setup-flyctl@master
@@ -39,7 +39,6 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   tag_release:
-    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-20.04
     permissions:
       contents: write
