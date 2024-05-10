@@ -7,6 +7,7 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize]
+
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
@@ -21,16 +22,16 @@ jobs:
         run: npm run eslint
       - name: Build
         run: npm run build
-      - name: Test
+      - name: Unit & Integration Tests
         run: npm run test
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
           command: npm run test:e2e
           start: npm run start-prod
-          wait-on: http://localhost:5000
+          wait_on: http://localhost:5000
       - name: Set up Fly.io
-        if: ${{ github.event.pull_request.merged == true }}
+        if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy App
         if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
@@ -38,7 +39,6 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   tag_release:
-    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-20.04
     permissions:
       contents: write
