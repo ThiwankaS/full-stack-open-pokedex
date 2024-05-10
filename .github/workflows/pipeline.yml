@@ -22,7 +22,7 @@ jobs:
         run: npm run eslint
       - name: Build
         run: npm run build
-      - name: Unit & Integration Tests
+      - name: Unit test
         run: npm run test
       - name: e2e tests
         uses: cypress-io/github-action@v5
@@ -31,10 +31,10 @@ jobs:
           start: npm run start-prod
           wait_on: http://localhost:5000
       - name: Set up Fly.io
-        if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
+        if: ${{ github.event_name == 'push' }}
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy App
-        if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
+        if: ${{ github.event_name == 'push' }}
         run: npm run deploy:fly
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
