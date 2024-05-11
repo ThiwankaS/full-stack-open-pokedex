@@ -33,15 +33,15 @@ jobs:
           start: npm run start-prod
           wait_on: http://localhost:5000
       - name: Set up Fly.io
-        if: ${{ github.event_name == 'push'}}
+        if: ${{ github.event_name == 'push' && contains(join(github.event.commits.*.message,', '),'#skip') == 'false' }}
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy App
-        if: ${{ github.event_name == 'push'}}
+        if: ${{ github.event_name == 'push' && contains(join(github.event.commits.*.message,', '),'#skip') == 'false' }}
         run: npm run deploy:fly
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && contains(join(github.event.commits.*.message,', '),'#skip') == 'false' }}
         uses: anothrNick/github-tag-action@v1
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
