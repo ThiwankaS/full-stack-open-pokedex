@@ -35,7 +35,7 @@ jobs:
           RESULT: ${{ env.RESULT }}
         run: |
           if[[$RESULT]] then
-            echo "Found a commit message containing '#skip'" 
+            echo "Found a commit message containing '#skip'"
           else
              echo "No commit message contains '#skip'"
           fi
