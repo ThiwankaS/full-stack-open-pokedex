@@ -12,6 +12,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Commit messages
         env:
-          COMMIT_MESSAGES: ${{ join(github.event.commits.*.message,', ')}}
+          RESULT: ${{ contains(join(github.event.commits.*.message,', '),'#skip')}}
         run: |
-          echo "$COMMIT_MESSAGES"
+          echo "$RESULT"
