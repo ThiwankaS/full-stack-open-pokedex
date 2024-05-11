@@ -10,33 +10,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
-      - name: Github context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github)}}
-        run: |
-          echo "$GITHUB_CONTEXT"
-      - name: Commits
-        env:
-          COMMITS: ${{ toJson(github.event.commits)}}
-        run: |
-          echo "$COMMITS"
       - name: Commit messages
         env:
           COMMIT_MESSAGES: ${{ join(github.event.commits.*.message,', ')}}
         run: |
           echo "$COMMIT_MESSAGES"
-      - name: Check for skip message
-        env:
-          RESULT: ${{ contains(env.COMMIT_MESSAGES,'#skip') }}
-        run: |
-          echo "$RESULT"
-      - name: Use the logic
-        env:
-          RESULT: ${{ env.RESULT }}
-        run: |
-          if[["$RESULT"=="true"]]
-          then
-            echo "Found a commit message containing '#skip'"
-          else
-             echo "No commit message contains '#skip'"
-          fi
