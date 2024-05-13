@@ -1,0 +1,30 @@
+on:
+  schedule:
+    - cron: 27 * * * *
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: https://fly.io/apps/full-stack-open-pokedex-thiwanka
+          follow-redirect: false
+          max-attempts: 2
+          retry-delay: 5s
+          retry-all: false
+      - name: Success notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          details: Health check Succeeded!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Failure notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          details: Health check Failed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
