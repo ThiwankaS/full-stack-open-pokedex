@@ -9,7 +9,7 @@ jobs:
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v4
         with:
-          url: https://fly.io/apps/full-stack-open-pokedex-thiwanka
+          url: https://fly.io/apps/full-stack-open-pokedex-thiwank
           follow-redirect: false
           max-attempts: 2
           retry-delay: 5s
@@ -19,12 +19,12 @@ jobs:
         if: success()
         with:
           severity: info
-          details: Health check Succeeded!
+          details: Health check Succeeded! App is live @ https://fly.io/apps/full-stack-open-pokedex-thiwanka
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Failure notification
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
         with:
           severity: error
-          details: Health check Failed!
+          details: Health check Failed! - ThiwankaS
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
